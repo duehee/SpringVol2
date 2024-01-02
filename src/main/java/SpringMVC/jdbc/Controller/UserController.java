@@ -1,48 +1,51 @@
 package SpringMVC.jdbc.Controller;
 
-import SpringMVC.jdbc.Service.UserService;
-import SpringMVC.jdbc.Service.UserServiceImplement;
 import SpringMVC.jdbc.Domain.User;
-import lombok.AllArgsConstructor;
+import SpringMVC.jdbc.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.SQLException;
 import java.util.List;
+
 // CRUD C -> POST, R -> GET, U -> PUT, D -> DELETE
 
 @RestController
 @RequestMapping("/User")
 public class UserController {
     @Autowired
-    private UserServiceImplement service;
+    UserService userService;
 
     @PostMapping("")
-    public User createUser(@RequestBody User user)
+    public User createUser(@RequestBody User user) throws SQLException
     {
-        return service.createUser(user);
+        return userService.createUser(user);
     }
 
     @GetMapping("")
-    public List<User> findAllUser()
+    public List<User> findAllUser() throws SQLException
     {
-        return service.findAllUser();
+        return userService.findAllUser();
     }
 
     @GetMapping("/{userId}")
-    public User findById(String userId)
+    public User findById(@PathVariable String userId) throws SQLException
     {
-        return service.findById(userId);
+        return userService.findById(userId);
     }
 
     @PutMapping("/{userId}")
-    public void updateUserName(String userId, String userName)
+    public void updateUsername(@PathVariable String userId, @RequestBody User user) throws SQLException
     {
-        service.updateUserName(userId, userName);
+        userService.updateUsername(userId, user);
     }
 
     @DeleteMapping("/{userId}")
-    public void deleteUser(String userId)
+    public void deleteUser(@PathVariable String userId) throws SQLException
     {
-        service.deleteUser(userId);
+        userService.deleteUser(userId);
     }
 }
